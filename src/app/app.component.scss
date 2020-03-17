@@ -2,8 +2,9 @@ body {
   background: #f7f8fe;
 
   .main {
+    position: relative;
     width: 1200px;
-    display: block;
-    margin: 0 auto;
+    padding: 0 30px;
+    margin: 1rem auto;
   }
 }
