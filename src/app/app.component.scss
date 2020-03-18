@@ -1,10 +1,30 @@
 body {
   background: #f7f8fe;
+}
 
-  .main {
-    position: relative;
-    width: 1200px;
-    padding: 0 30px;
-    margin: 1rem auto;
+.main {
+  position: relative;
+  width: 1200px;
+  padding: 0 30px;
+  margin: 1rem auto;
+
+  .row {
+    display: flex;
+    margin-right: -15px;
+    margin-left: -15px;
+
+    .half-column {
+      flex: 0 0 50%;
+      max-width: 50%;
+      margin: 0 auto;
+    }
   }
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
 }

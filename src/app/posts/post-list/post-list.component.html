@@ -1,11 +1,22 @@
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>Title</mat-panel-title>
-      <mat-panel-description></mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-panel-description>
-      <mat-panel-title>Description</mat-panel-title>
-    </mat-panel-description>
-  </mat-expansion-panel>
-</mat-accordion>
+<div class="row">
+  <div class="columns">
+    <mat-accordion *ngIf='posts.length > 0; else noContent' class="mb-2">
+      <mat-expansion-panel *ngFor='let post of posts'>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{ post?.title }}</mat-panel-title>
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          <mat-panel-title>{{ post?.description }}</mat-panel-title>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+<ng-template #noContent>
+  <div class="row">
+    <div class="columns">
+      <p>No posts available.</p>
+    </div>
+  </div>
+</ng-template>
