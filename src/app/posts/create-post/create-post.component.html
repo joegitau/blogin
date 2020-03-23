@@ -11,6 +11,7 @@
       <mat-label>Description</mat-label>
       <textarea matInput rows="4" formControlName='description' [ngClass]="{ 'is-invalid': (postsForm.get('description').dirty || postsForm.get('description').touched) &&
         !postsForm.get('description').valid}"></textarea>
+      <mat-error *ngIf="postsForm.get('description').errors?.required">Description is required.</mat-error>
     </mat-form-field>
     <button mat-raised-button color='accent' [disabled]='!postsForm.valid'>Create Post</button>
   </form>

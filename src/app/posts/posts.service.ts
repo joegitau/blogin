@@ -11,7 +11,7 @@ export class PostsService {
   updatedPosts = new Subject<Post[]>();
 
   getPosts() {
-    return this.posts;
+    return [...this.posts];
   }
 
   getPostsAsObs() {

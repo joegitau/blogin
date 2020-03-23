@@ -23,6 +23,8 @@ export class CreatePostComponent implements OnInit {
   createPost() {
     if (this.postsForm.valid) {
       this.postsService.addPosts(this.postsForm.value);
+
+      this.postsForm.reset();
     }
     return false;
   }
