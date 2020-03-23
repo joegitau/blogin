@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Subject } from "rxjs";
 
 import { Post } from "./post.model";
 
@@ -8,12 +8,19 @@ import { Post } from "./post.model";
 })
 export class PostsService {
   private posts: Post[] = [];
+  updatedPosts = new Subject<Post[]>();
 
   getPosts() {
     return this.posts;
   }
 
+  getPostsAsObs() {
+    return this.updatedPosts.asObservable();
+  }
+
   addPosts(post: Post) {
-    return this.posts.push(post);
+    this.posts.push(post);
+
+    this.updatedPosts.next([...this.posts]);
   }
 }
