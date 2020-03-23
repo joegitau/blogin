@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { Post } from "../post.model";
+import { PostsService } from "../posts.service";
 
 @Component({
   selector: "app-create-post",
@@ -8,21 +9,21 @@ import { Post } from "../post.model";
   styleUrls: ["./create-post.component.scss"]
 })
 export class CreatePostComponent implements OnInit {
-  enteredTitle: string = "";
-  enteredDescription: string = "";
+  postsForm: FormGroup;
 
-  @Output() createdPost = new EventEmitter();
+  constructor(private fb: FormBuilder, private postsService: PostsService) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.postsForm = this.fb.group({
+      title: ["", [Validators.required, Validators.minLength(3)]],
+      description: ["", Validators.required]
+    });
+  }
 
   createPost() {
-    const post: Post = {
-      title: this.enteredTitle,
-      description: this.enteredDescription
-    };
-
-    this.createdPost.emit(post);
+    if (this.postsForm.valid) {
+      this.postsService.addPosts(this.postsForm.value);
+    }
+    return false;
   }
 }

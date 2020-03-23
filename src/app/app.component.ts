@@ -7,10 +7,4 @@ import { Post } from "./posts/post.model";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {
-  savedPosts: Post[] = [];
-
-  onPostCreation(post: Post) {
-    this.savedPosts.push(post);
-  }
-}
+export class AppComponent {}

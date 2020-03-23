@@ -1,11 +1,17 @@
 <mat-card>
-  <mat-form-field class="full-width">
-    <mat-label>Title</mat-label>
-    <input type="text" matInput [(ngModel)]='enteredTitle'>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>Description</mat-label>
-    <textarea matInput rows="4" [(ngModel)]='enteredDescription'></textarea>
-  </mat-form-field>
-  <button mat-raised-button color='accent' (click)='createPost()'>Create Post</button>
+  <form novalidate [formGroup]='postsForm' (ngSubmit)='createPost()'>
+    <mat-form-field class="full-width">
+      <mat-label>Title</mat-label>
+      <input type="text" matInput formControlName='title' [ngClass]="{ 'is-invalid': (postsForm.get('title').dirty || postsForm.get('title').touched) &&
+        !postsForm.get('title').valid}">
+      <mat-error *ngIf="postsForm.get('title').errors?.required">Title is required.</mat-error>
+      <mat-error *ngIf="postsForm.get('title').errors?.minLength">Title must have more than 3 characters.</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" formControlName='description' [ngClass]="{ 'is-invalid': (postsForm.get('description').dirty || postsForm.get('description').touched) &&
+        !postsForm.get('description').valid}"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color='accent' [disabled]='!postsForm.valid'>Create Post</button>
+  </form>
 </mat-card>
