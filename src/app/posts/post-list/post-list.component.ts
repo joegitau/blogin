@@ -3,7 +3,7 @@ import { Subscription } from "rxjs";
 
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
-
+import { PostData } from "../posts.service";
 @Component({
   selector: "app-post-list",
   templateUrl: "./post-list.component.html",
@@ -11,15 +11,18 @@ import { PostsService } from "../posts.service";
 })
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
+  successMsg: string;
   sub$: Subscription;
 
   constructor(private postsService: PostsService) {}
 
   ngOnInit(): void {
-    // this.posts = this.postsService.getPosts();
     this.sub$ = this.postsService
-      .getPostsAsObs()
-      .subscribe((posts: Post[]) => (this.posts = posts));
+      .fetchPosts()
+      .subscribe((postsData: PostData) => {
+        this.posts = postsData.posts;
+        this.successMsg = postsData.message;
+      });
   }
 
   ngOnDestroy() {

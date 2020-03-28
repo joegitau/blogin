@@ -25,7 +25,14 @@ const posts = [
 ];
 
 router.get("/", (req, res, next) => {
-  res.status(200).json(posts);
+  res.status(200).json({ message: "Posts fetched succesfully.", posts });
+});
+
+router.post("/", (req, res, next) => {
+  const post = req.body;
+  console.log(post);
+
+  res.status(201).json({ message: "Post succesfully created!", post });
 });
 
 module.exports = router;
