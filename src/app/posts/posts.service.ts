@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Subject, Observable } from "rxjs";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Subject, Observable, throwError } from "rxjs";
+import { map, catchError } from "rxjs/operators";
 
 import { Post } from "./post.model";
 
@@ -26,13 +27,25 @@ export class PostsService {
     return this.updatedPosts.asObservable();
   }
 
-  fetchPosts(): Observable<PostData> {
-    return this.http.get<PostData>(`${this.BASE_URL}/posts`);
+  getAll(): Observable<PostData> {
+    return this.http
+      .get<PostData>(`${this.BASE_URL}/posts`)
+      .pipe(catchError(this.handleErrors));
+  }
+
+  create(post: Post) {
+    return this.http
+      .post<PostData>(`${this.BASE_URL}/posts`, post)
+      .pipe(catchError(this.handleErrors));
   }
 
   addPosts(post: Post) {
     this.posts.push(post);
 
     this.updatedPosts.next([...this.posts]);
+  }
+
+  handleErrors(err: HttpErrorResponse) {
+    return throwError({ error: err.message });
   }
 }
