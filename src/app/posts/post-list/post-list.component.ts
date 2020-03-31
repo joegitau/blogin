@@ -4,14 +4,13 @@ import { Subscription, pipe } from "rxjs";
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
 import { PostData } from "../posts.service";
-import { tap } from "rxjs/operators";
 @Component({
   selector: "app-post-list",
   templateUrl: "./post-list.component.html",
   styleUrls: ["./post-list.component.scss"]
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  posts: PostData;
+  posts;
   successMsg: string;
   sub$: Subscription;
 
@@ -24,12 +23,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   deletePost(id: string) {
-    this.postsService
-      .delete(id)
-      .pipe(
-        tap(post => console.log(`Post with post ID ${post.id} was deleted!`))
-      )
-      .subscribe(error => console.error("Its supposed to delete!", error));
+    this.postsService.delete(id).subscribe(
+      () => {
+        const filteredPosts = this.posts.filter((post: Post) => post.id !== id);
+
+        this.posts = filteredPosts;
+      },
+      error => console.error("Its supposed to delete!", error)
+    );
   }
 
   ngOnDestroy() {
