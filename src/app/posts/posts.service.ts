@@ -7,7 +7,7 @@ import { Post } from "./post.model";
 
 export interface PostData {
   message: string;
-  posts: Post[];
+  posts: any;
 }
 @Injectable({
   providedIn: "root"
@@ -28,9 +28,18 @@ export class PostsService {
   }
 
   getAll(): Observable<PostData> {
-    return this.http
-      .get<PostData>(`${this.BASE_URL}/posts`)
-      .pipe(catchError(this.handleErrors));
+    return this.http.get<PostData>(`${this.BASE_URL}/posts`).pipe(
+      map(postData =>
+        postData.posts.map(post => {
+          return {
+            id: post._id,
+            title: post.title,
+            description: post.description
+          };
+        })
+      ),
+      catchError(this.handleErrors)
+    );
   }
 
   create(post: Post) {
