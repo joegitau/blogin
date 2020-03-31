@@ -26,8 +26,8 @@ app.use("/api/posts", posts);
 mongoose
   .connect("mongodb://localhost/blogin", {
     useFindAndModify: false,
-    useUnifiedTopology: false,
-    useNewUrlParser: false
+    useUnifiedTopology: true,
+    useNewUrlParser: true
   })
   .then(() => console.log("Connected to Mongodb..."))
   .catch(err => console.error("could not connect to mongodb...", err));
