@@ -14,17 +14,18 @@ export interface PostData {
 })
 export class PostsService {
   private BASE_URL = "http://localhost:3000/api";
-  private posts: Post[] = [];
   updatedPosts = new Subject<Post[]>();
 
   constructor(private http: HttpClient) {}
 
-  getPosts() {
-    return [...this.posts];
-  }
-
   getPostsAsObs() {
     return this.updatedPosts.asObservable();
+  }
+
+  get(id: number): any {
+    return this.getAll().subscribe(postData => {
+      return postData.posts.find(post => post.id === id);
+    });
   }
 
   getAll(): Observable<PostData> {
@@ -48,10 +49,8 @@ export class PostsService {
       .pipe(catchError(this.handleErrors));
   }
 
-  addPosts(post: Post) {
-    this.posts.push(post);
-
-    this.updatedPosts.next([...this.posts]);
+  delete(id: string): Observable<Post> {
+    return this.http.delete<Post>(`${this.BASE_URL}/posts/${id}`);
   }
 
   handleErrors(err: HttpErrorResponse) {
