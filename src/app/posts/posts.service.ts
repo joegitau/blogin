@@ -19,12 +19,14 @@ export class PostsService {
 
   constructor(private http: HttpClient) {}
 
-  getPosts() {
-    return [...this.posts];
-  }
+  // getPostsAsObs() {
+  //   return this.updatedPosts.asObservable();
+  // }
 
-  getPostsAsObs() {
-    return this.updatedPosts.asObservable();
+  getPost(id: string): Observable<Post> {
+    return this.getAll().pipe(
+      map(postsData => postsData.posts.find(post => post.id === id))
+    );
   }
 
   getAll(): Observable<PostData> {
@@ -36,6 +38,12 @@ export class PostsService {
   create(post: Post) {
     return this.http
       .post<PostData>(`${this.BASE_URL}/posts`, post)
+      .pipe(catchError(this.handleErrors));
+  }
+
+  update(id: string, post: Post) {
+    return this.http
+      .put(`${this.BASE_URL}/posts/${id}`, post)
       .pipe(catchError(this.handleErrors));
   }
 

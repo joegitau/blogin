@@ -1,9 +1,12 @@
 <mat-card>
-  <form novalidate [formGroup]='postsForm' (ngSubmit)='createPost()'>
+  <form novalidate [formGroup]='postsForm' (ngSubmit)='savePost()'>
     <mat-form-field class="full-width">
       <mat-label>Title</mat-label>
-      <input type="text" matInput formControlName='title' [ngClass]="{ 'is-invalid': (postsForm.get('title').dirty || postsForm.get('title').touched) &&
-        !postsForm.get('title').valid}">
+      <input type="text" matInput formControlName='title'
+            [ngClass]="{ 'is-invalid': (postsForm.get('title').dirty || postsForm.get('title').touched) &&
+            !postsForm.get('title').valid}"
+
+      >
       <mat-error *ngIf="postsForm.get('title').errors?.required">Title is required.</mat-error>
       <mat-error *ngIf="postsForm.get('title').errors?.minLength">Title must have more than 3 characters.</mat-error>
     </mat-form-field>
