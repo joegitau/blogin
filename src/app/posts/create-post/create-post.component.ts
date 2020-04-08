@@ -13,13 +13,13 @@ import { Post } from '../post.model';
 })
 export class CreatePostComponent implements OnInit {
   postId: string;
-  mode: string = 'create';
+  mode = 'create';
   post: Post;
 
   postsForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private postsService: PostsService,
+              private postService: PostsService,
               private route: ActivatedRoute
   ) {}
 
@@ -34,7 +34,8 @@ export class CreatePostComponent implements OnInit {
         this.mode = 'edit';
         this.postId = params.get('id');
 
-        this.postsService.getPost(this.postId).subscribe(post => this.post = post);
+        this.postService.getPost(this.postId).subscribe(post => this.post = post);
+        // this.postService.get(this.postId).subscribe(post => this.post = post);
       } else {
         this.mode = 'create';
         this.postId = null;
@@ -51,13 +52,13 @@ export class CreatePostComponent implements OnInit {
           description: this.postsForm.value.description
         };
 
-        this.postsService.update(this.postsForm.value.id, post).subscribe(
+        this.postService.update(this.postsForm.value.id, post).subscribe(
           post => console.log(post),
 
           error => console.error('It should be updating!', error)
         );
       } else if (this.mode === 'create') {
-        this.postsService.create(this.postsForm.value).subscribe(
+        this.postService.create(this.postsForm.value).subscribe(
           () => this.postsForm.reset(),
 
           error => console.error("Definitely your fault, coz it aint us!", error)

@@ -29,6 +29,12 @@ export class PostsService {
     );
   }
 
+  get(id: string): Observable<Post> {
+    return this.http
+      .get<Post>(`${this.BASE_URL}/posts/${id}`)
+      .pipe(catchError(this.handleErrors));
+  }
+
   getAll(): Observable<PostData> {
     return this.http
       .get<PostData>(`${this.BASE_URL}/posts`)
