@@ -22,30 +22,27 @@ export class PostsService {
     return this.updatedPosts.asObservable();
   }
 
-  get(id: number): any {
-    return this.getAll().subscribe(postData => {
-      return postData.posts.find(post => post.id === id);
-    });
+  getPost(id: string): Observable<Post> {
+    return this.getAll().pipe(
+      map(postsData => postsData.posts.find(post => post.id === id))
+    );
   }
 
   getAll(): Observable<PostData> {
-    return this.http.get<PostData>(`${this.BASE_URL}/posts`).pipe(
-      map(postData =>
-        postData.posts.map(post => {
-          return {
-            id: post._id,
-            title: post.title,
-            description: post.description
-          };
-        })
-      ),
-      catchError(this.handleErrors)
-    );
+    return this.http
+      .get<PostData>(`${this.BASE_URL}/posts`)
+      .pipe(catchError(this.handleErrors));
   }
 
   create(post: Post) {
     return this.http
       .post<PostData>(`${this.BASE_URL}/posts`, post)
+      .pipe(catchError(this.handleErrors));
+  }
+
+  update(id: string, post: Post) {
+    return this.http
+      .put(`${this.BASE_URL}/posts/${id}`, post)
       .pipe(catchError(this.handleErrors));
   }
 
